@@ -1,14 +1,16 @@
-from flask import Blueprint, request, jsonify, make_response, Response
-from models.User import User
-from repositories.UserRepository import UserRepository
-from utilities import generateToken, decodeToken
+from flask import Blueprint, request, Response
+from backend.models.Profile import Profile
+from backend.models.User import User
+from backend.repositories.ProfileRepository import ProfileRepository
+from backend.repositories.UserRepository import UserRepository
+from backend.utilities import generateToken, decodeToken
 
-bp = Blueprint('user_routes', __name__, url_prefix='/api/users')
+bp = Blueprint('auth', __name__, url_prefix='/api/auth')
 
 
 @bp.route('/register', methods=['POST'])
 def register() -> Response:
-    """ The register endpoint is used to create a new user in the database.
+    """ The register endpoint is used to create a new user in the database and an empty Profile for the user.
     :return: HTTP Response
     :rtype: Response
     """
@@ -27,10 +29,15 @@ def register() -> Response:
         return Response(response="Username already taken",
                         status=status_code)
 
-    # Creating the user in the DB
     try:
+        # Creating the user in the DB
         user = User(username, raw_password)
         UserRepository().add(user)
+
+        # Creating the profile for the user.
+        profile = Profile(user.id)
+        ProfileRepository().add(profile)
+
         token = generateToken(user)
         status_code = 200
         return Response(response=token,

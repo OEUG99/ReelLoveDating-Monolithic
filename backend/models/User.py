@@ -21,17 +21,17 @@ class User(AbstractEntity):
     email = None
     raw_password = None
 
-    def __init__(self, username, password, userID=None):
+    def __init__(self, email, password, userID=None):
 
         if userID is not None:
             # if an id is provided, we can assume the password is hashed.
             # This is used when we are getting a user from the database.
             self.id = userID
-            self.email = username
+            self.email = email
             self.password = password
             return
 
-        if not validateUsername(username):
+        if not validateUsername(email):
             raise ValueError("Username does not meet the minimum requirements.")
 
         if validatePassword(password):
@@ -40,7 +40,7 @@ class User(AbstractEntity):
                              "character. It also can not be longer then 100 characters.")
 
         self.id = str(uuid.uuid4())
-        self.email = username
+        self.email = email
         self.password = hashPassword(password)
 
     def __repr__(self):

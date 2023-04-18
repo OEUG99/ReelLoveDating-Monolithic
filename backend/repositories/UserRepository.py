@@ -1,8 +1,7 @@
 from PyDataOpsKit.AbstractRepoistory import AbstractRepository
 from PyDataOpsKit.DatabaseManager import DatabaseManager
-from PyDataOpsKit.SQLiteStrategy import SQLiteStrategy
 
-from models.User import User
+from backend.models import User
 
 
 class UserRepository(AbstractRepository):
@@ -11,24 +10,25 @@ class UserRepository(AbstractRepository):
         self.db = DatabaseManager()
         self.create_table()
 
-
     def create_table(self):
         try:
             self.db.query("""
                 CREATE TABLE IF NOT EXISTS users (
                     id VARCHAR(255) PRIMARY KEY,
-                    username VARCHAR(255) NOT NULL UNIQUE,
+                    email VARCHAR(255) NOT NULL UNIQUE,
                     password VARCHAR(255) NOT NULL
                 )
             """)
         except Exception as e:
             print("Error while creating the 'users' table:", e)
 
+
     def add(self, user):
         self.db.query("""
-            INSERT INTO users (id, username, password)
-            VALUES (?, ?, ?)
-        """, (user.id, user.email, user.password))
+                    INSERT INTO users (id, email, password)
+                    VALUES (%s, %s, %s)
+                    ON DUPLICATE KEY UPDATE email = %s
+                """, (user.id, user.email, user.password, user.email))
 
 
     def update(self, user):
@@ -43,7 +43,7 @@ class UserRepository(AbstractRepository):
     def get_all(self):
         pass
 
-    def get_by_username(self, username):
+    def get_by_username(self, email):
         """
         searches the database for a user with the given username and returns a User object if found.
         if no user is found, returns None
@@ -54,8 +54,8 @@ class UserRepository(AbstractRepository):
         :rtype:
         """
         userTuple = self.db.query("""
-            SELECT * FROM users WHERE username = ? LIMIT 1
-        """, (username,))
+            SELECT * FROM users WHERE email = %s LIMIT 1
+        """, (email,))
 
         if userTuple:
             return User(userID=userTuple[0],
@@ -64,10 +64,13 @@ class UserRepository(AbstractRepository):
         else:
             return None
 
-    def check_password(self, username, password):
+    def check_password(self, email, password):
 
         result = self.db.query("""
-            SELECT * FROM users WHERE username = ? AND password = ? LIMIT 1
-        """, (username, password))
+            SELECT * FROM users WHERE email = ? AND password = ? LIMIT 1
+        """, (email, password))
 
         return result
+
+    def __del__(self):
+        self.db.close()
