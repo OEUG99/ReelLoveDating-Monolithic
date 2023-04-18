@@ -1,7 +1,8 @@
 from flask import Blueprint, request
-from backend.models.Profile import Profile
-from backend.repositories.ProfileRepository import ProfileRepository
-from backend.utilities import decodeToken
+
+from backend.src.models.Profile import Profile
+from backend.src.repositories.ProfileRepository import ProfileRepository
+from backend.src.utilities import decodeToken
 
 bp = Blueprint('profile', __name__, url_prefix='/api/profile')
 

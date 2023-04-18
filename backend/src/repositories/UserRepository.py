@@ -1,7 +1,6 @@
 from PyDataOpsKit.AbstractRepoistory import AbstractRepository
 from PyDataOpsKit.DatabaseManager import DatabaseManager
-
-from backend.models import User
+from backend.src.models.User import User
 
 
 class UserRepository(AbstractRepository):
@@ -59,7 +58,7 @@ class UserRepository(AbstractRepository):
 
         if userTuple:
             return User(userID=userTuple[0],
-                        username=userTuple[1],
+                        email=userTuple[1],
                         password=userTuple[2])
         else:
             return None

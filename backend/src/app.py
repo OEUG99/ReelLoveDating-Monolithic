@@ -1,6 +1,6 @@
 from flask import Flask
 
-from backend.api import profileRoutes, authRoutes
+from backend.src.api import authRoutes, profileRoutes
 
 app = Flask(__name__)
 

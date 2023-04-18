@@ -1,9 +1,10 @@
 from flask import Blueprint, request, Response
-from backend.models.Profile import Profile
-from backend.models.User import User
-from backend.repositories.ProfileRepository import ProfileRepository
-from backend.repositories.UserRepository import UserRepository
-from backend.utilities import generateToken, decodeToken
+
+from backend.src.models.Profile import Profile
+from backend.src.models.User import User
+from backend.src.repositories.ProfileRepository import ProfileRepository
+from backend.src.repositories.UserRepository import UserRepository
+from backend.src.utilities import generateToken, decodeToken
 
 bp = Blueprint('auth', __name__, url_prefix='/api/auth')
 
