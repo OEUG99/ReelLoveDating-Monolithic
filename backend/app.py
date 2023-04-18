@@ -1,12 +1,12 @@
 from flask import Flask
 
-from backend.api import profile, auth
+from backend.api import profileRoutes, authRoutes
 
 app = Flask(__name__)
 
 # Registering the blueprints
-app.register_blueprint(auth.bp)
-app.register_blueprint(profile.bp)
+app.register_blueprint(authRoutes.bp)
+app.register_blueprint(profileRoutes.bp)
 
 
 @app.route('/')
