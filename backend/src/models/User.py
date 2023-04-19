@@ -1,16 +1,17 @@
-'''
+"""
 Copyright by OEUG99
-'''
+"""
 
 import re
 import uuid
+from abc import ABC
 from dataclasses import dataclass
 import bcrypt
-from PyDataOpsKit.AbstractEntity import AbstractEntity
+from PyDataOpsKit.AbstractModel import AbstractModel
 
 
 @dataclass
-class User(AbstractEntity):
+class User(AbstractModel, ABC):
     """
     This user class models the user entity in the database.
     Whenever we get a users info from the database, we will create a user object.
