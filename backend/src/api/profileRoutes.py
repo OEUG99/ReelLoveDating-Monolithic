@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, Response
 
 from backend.src.models.Profile import Profile
 from backend.src.repositories.ProfileRepository import ProfileRepository
@@ -8,47 +8,73 @@ bp = Blueprint('profile', __name__, url_prefix='/api/profile')
 
 
 @bp.route('/create', methods=['POST'])
-def createProfile():
+def createProfile() -> Response:
     data = request.get_json()
-    authToken = data.get('authToken')
+    decodedToken = decodeToken(data.get('authToken'))
 
-    decodedToken = decodeToken(authToken)
-
-    # todo updates these to be Response objects
-    if decodedToken == "Token expired.":
-        return "Token expired."
-    elif decodedToken == "Invalid token.":
-        return "Invalid token."
+    if isinstance(decodedToken, Response):
+        return decodedToken
 
     profile = Profile(decodedToken["user_id"])
 
     ProfileRepository().add(profile)
 
-    return "Profile created."
+    return Response(status=200)
 
 
-# get profile by ID now via URL
+@bp.route('/update', methods=['POST'])
+def updateProfile() -> Response:
+    data = request.get_json()
+    decodedToken = decodeToken(data.get('authToken'))
+
+    if isinstance(decodedToken, Response):
+        return decodedToken
+
+    # get profile by ID and updating it
+    profile = Profile(decodedToken['user_id'])
+    profile.firstName = data.get('firstName')
+    profile.lastName = data.get('lastName')
+    profile.bio = data.get('bio')
+    profile.location = data.get('location')
+    profile.visibility = data.get('visibility')
+    profile.gender = data.get('gender')
+    profile.age = data.get('age')
+    profile.interests = data.get('interests')
+    profile.sexuality = data.get('sexuality')
+
+    # updating profile in DB
+    ProfileRepository().update(profile)
+
+    return Response(status=200)
+
+
 @bp.route('/<userID>', methods=['GET'])
-def getProfile(userID):
-    print(userID)
-    output = ProfileRepository().get_by_userID(userID)
-    print(output)
-    return str(output)
+def getProfile(userID: str) -> Response:
+    output = ProfileRepository().getByUserID(userID)
 
+    # if no user is found, return 204
+    if output is None:
+        return Response(status=204)
+
+    return Response(str(output), status=200)
 
 
 @bp.route('/random', methods=['POST'])
-def getRandomProfiles():
-    # TODO: added some security checks so that only logged in users can access this endpoint
-    # TODO: add a limit to the number of profiles that can be fetched at once
-    # ADD A COOL DOWN PERIOD TO PREVENT SPAMMING
-    # data = request.get_json()
-    # numProfilesToFetch = data.get('numProfilesToFetch')
+def getRandomProfiles() -> Response:
+    data = request.get_json()
+    numProfilesToFetch = data.get('numProfilesToFetch')
     print("Fetching random profiles...")
 
-    profiles = ProfileRepository().get_by_userID()
-    print(profiles)
-    return str(profiles)
+    # security check limits the number of profiles that can be fetched at once
+    if numProfilesToFetch > 20:
+        numProfilesToFetch = 20
+
+    profilesList = ProfileRepository().getRandom(numProfilesToFetch)
+
+    if profilesList is None:
+        return Response(status=204)
+
+    return Response(profilesList, status=200)
 
 
 @bp.route('/health', methods=['GET'])
