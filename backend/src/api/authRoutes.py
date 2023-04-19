@@ -26,7 +26,7 @@ def register() -> Response:
         return Response(status=status_code)
 
     # Checking if the username is already taken
-    if UserRepository().get_by_username(username):
+    if UserRepository().getByUsername(username):
         return Response(response="Username already taken",
                         status=status_code)
 
@@ -65,7 +65,7 @@ def login() -> Response:
         return Response(status=status_code)
 
     # Check if the user exists in the database
-    user = UserRepository().get_by_username(username)
+    user = UserRepository().getByUsername(username)
 
     if not user:
         return Response(response="Invalid username or password",
@@ -73,7 +73,7 @@ def login() -> Response:
 
     # Check if the password is correct
     hashed_password = user.password
-    if not UserRepository().check_password(username, hashed_password):
+    if not UserRepository().checkPassword(username, hashed_password):
         return Response(response="Invalid username or password",
                         status=status_code)
     try:
