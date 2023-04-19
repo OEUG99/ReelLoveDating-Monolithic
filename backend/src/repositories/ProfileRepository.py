@@ -1,15 +1,8 @@
-from abc import ABC
-
 from PyDataOpsKit import AbstractRepository
-from PyDataOpsKit.DatabaseManager import DatabaseManager
 from backend.src.models.Profile import Profile
 
 
 class ProfileRepository(AbstractRepository):
-
-    def __init__(self):
-        self.db = DatabaseManager()
-        self.createTable()
 
     def createTable(self):
         """

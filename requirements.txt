@@ -5,4 +5,4 @@ PyJWT~=2.6.0
 mysql-connector-python~=8.0.32
 boto3~=1.26.113
 botocore~=1.29.113
-git+https://github.com/OEUG99/PyDataOpsKit.git@v1.0.1-alpha-r2#egg=PyDataOpsKit
+git+https://github.com/OEUG99/PyDataOpsKit.git@v1.0.1-alpha-r3#egg=PyDataOpsKit

@@ -1,13 +1,8 @@
 from PyDataOpsKit.AbstractRepoistory import AbstractRepository
-from PyDataOpsKit.DatabaseManager import DatabaseManager
 from backend.src.models.User import User
 
 
 class UserRepository(AbstractRepository):
-
-    def __init__(self):
-        self.db = DatabaseManager()
-        self.createTable()
 
     def createTable(self):
         """
