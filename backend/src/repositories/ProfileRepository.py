@@ -154,5 +154,14 @@ class ProfileRepository(AbstractRepository):
 
         return profiles
 
+    def getList(self, limit, offset=None):
+        pass
+
+    def getCount(self):
+        pass
+
+    def getByAttribute(self, attribute):
+        pass
+
     def __del__(self):
         self.db.close()
