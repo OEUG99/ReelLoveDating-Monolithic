@@ -7,9 +7,14 @@ class UserRepository(AbstractRepository):
 
     def __init__(self):
         self.db = DatabaseManager()
-        self.create_table()
+        self.createTable()
 
-    def create_table(self):
+    def createTable(self):
+        """
+        creates the users table in the database if it does not yet exists.
+        :return:
+        :rtype:
+        """
         try:
             self.db.query("""
                 CREATE TABLE IF NOT EXISTS users (
@@ -21,14 +26,12 @@ class UserRepository(AbstractRepository):
         except Exception as e:
             print("Error while creating the 'users' table:", e)
 
-
     def add(self, user):
         self.db.query("""
                     INSERT INTO users (id, email, password)
                     VALUES (%s, %s, %s)
                     ON DUPLICATE KEY UPDATE email = %s
                 """, (user.id, user.email, user.password, user.email))
-
 
     def update(self, user):
         pass
@@ -39,16 +42,15 @@ class UserRepository(AbstractRepository):
     def get(self, id):
         pass
 
-    def get_all(self):
+    def getAll(self):
         pass
 
-    def get_by_username(self, email):
+    def getByUsername(self, email: str):
         """
-        searches the database for a user with the given username and returns a User object if found.
+        searches the database for a user with the given email and returns a User object if found.
         if no user is found, returns None
 
-        :param username:
-        :type username:
+        :param email:
         :return:User() or None
         :rtype:
         """
@@ -63,7 +65,16 @@ class UserRepository(AbstractRepository):
         else:
             return None
 
-    def check_password(self, email, password):
+    def checkPassword(self, email: str, password: str):
+        """
+        checks if the given password hash matches the password of the user with the given email.
+        :param email: str
+        :type email: str
+        :param password: str
+        :type password: str
+        :return:
+        :rtype:
+        """
 
         result = self.db.query("""
             SELECT * FROM users WHERE email = ? AND password = ? LIMIT 1
