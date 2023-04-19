@@ -102,7 +102,12 @@ def validate() -> Response:
     # Decoding and validating the token
     try:
         decodedToken = decodeToken(token)
-        return Response(response=decodedToken, status=200)
 
+        if isinstance(decodedToken, Response):
+            # if decode fails, we will return the Result object it creates.
+            return decodedToken
+
+        # if decode is a success it will return a string containing the token.
+        return Response(response=f"your access to user {decodedToken.get('userID')} is valid", status=200)
     except Exception as e:
         return Response(response=str(e), status=400)

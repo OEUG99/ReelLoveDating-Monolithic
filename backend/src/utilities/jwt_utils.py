@@ -2,6 +2,7 @@ import datetime
 import json
 import os
 import jwt
+from flask import Response
 
 
 def getSecretKey():
@@ -24,7 +25,7 @@ def generateToken(user):
     userID = user.id
     expiration_date = datetime.datetime.today() + datetime.timedelta(days=1)  # 1 day expiration
 
-    token = jwt.encode({'user_id': userID,
+    token = jwt.encode({'userID': userID,
                         'exp': expiration_date},
                        getSecretKey(),
                        algorithm="HS256")
@@ -42,10 +43,10 @@ def decodeToken(encodedToken):
 
     try:
         decodedToken = jwt.decode(encodedToken, getSecretKey(), algorithms=["HS256"])
-        return json.dumps(decodedToken)
+        return decodedToken
 
     except jwt.ExpiredSignatureError:
-        return "Token expired."
+        return Response(response="Token expired.", status=401)
 
     except jwt.InvalidTokenError:
-        return "Invalid token."
+        return Response(response="Invalid Token.", status=401)
