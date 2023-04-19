@@ -56,7 +56,7 @@ class UserRepository(AbstractRepository):
         """
         userTuple = self.db.query("""
             SELECT * FROM users WHERE email = %s LIMIT 1
-        """, (email,))
+        """, (email,))[0]
 
         if userTuple:
             return User(userID=userTuple[0],

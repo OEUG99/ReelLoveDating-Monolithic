@@ -11,7 +11,7 @@ from PyDataOpsKit.AbstractModel import AbstractModel
 
 
 @dataclass
-class User(AbstractModel, ABC):
+class User(AbstractModel):
     """
     This user class models the user entity in the database.
     Whenever we get a users info from the database, we will create a user object.
@@ -43,6 +43,14 @@ class User(AbstractModel, ABC):
         self.id = str(uuid.uuid4())
         self.email = email
         self.password = hashPassword(password)
+
+    def toDict(self) -> dict:
+        return {
+            "id": self.id,
+            "email": self.email,
+            "password": self.password
+        }
+
 
     def __repr__(self):
         return '<User %r>' % self.email
