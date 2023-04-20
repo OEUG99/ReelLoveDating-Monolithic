@@ -1,6 +1,8 @@
+from dataclasses import dataclass
 from PyDataOpsKit import AbstractModel
 
 
+@dataclass
 class Movie(AbstractModel):
     """
     This movie class models the movie entity in the database.
