@@ -25,7 +25,7 @@ class MovieRepository(AbstractRepository):
                     rating VARCHAR(255)
                     )
                 """)
-            print("Profile table created successfully")
+            print("Movie table created successfully")
         except Exception as e:
             print("Error while creating the 'movies' table:", e)
 
