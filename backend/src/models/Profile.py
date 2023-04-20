@@ -49,7 +49,7 @@ class Profile(AbstractModel):
         :param favoriteMovies:
         :type favoriteMovies:
         """
-        self.userID = userID
+        self.id = userID
         self.visibility = visibility
         self.firstName = firstName
         self.lastName = lastName
@@ -68,7 +68,7 @@ class Profile(AbstractModel):
         :rtype:
         """
         return {
-            "userID": self.userID,
+            "id": self.id,
             "visibility": self.visibility,
             "firstName": self.firstName,
             "lastName": self.lastName,

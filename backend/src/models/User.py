@@ -64,13 +64,16 @@ class User(AbstractModel):
             "password": self.password
         }
 
-    def __repr__(self):
+    def __str__(self):
         """
         Returns a string representation of the user object.
         :return:
         :rtype:
         """
         return '<User %r>' % self.email
+
+    def __repr__(self):
+        return self.id
 
 
 # Utility functions for the User class below:

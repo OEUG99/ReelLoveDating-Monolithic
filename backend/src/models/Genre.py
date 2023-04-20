@@ -12,7 +12,7 @@ class Genre(AbstractModel):
     """
 
     def __init__(self, genreName, actedInGenre=None, belongsToGenre=None, hasDirectedGenre=None, isFavoriteOf=None):
-        self.genreName = genreName
+        self.name = genreName
         self.actedInGenre = actedInGenre  # todo: may not be needed, duplicate data in movie table.
         self.belongsToGenre = belongsToGenre
         self.hasDirectedGenre = hasDirectedGenre  # not sure why this is in the schema?
@@ -20,9 +20,12 @@ class Genre(AbstractModel):
 
     def toDict(self) -> dict:
         return {
-            "genreName": self.genreName,
+            "name": self.name,
             "actedInGenre": self.actedInGenre,
             "belongsToGenre": self.belongsToGenre,
             "hasDirectedGenre": self.hasDirectedGenre,
             "isFavoriteOf": self.isFavoriteOf
         }
+
+    def __repr__(self):
+        return self.name
