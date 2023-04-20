@@ -9,7 +9,7 @@ class Movie(AbstractModel):
     via the movieRepository.
     """
 
-    def __init__(self, movieID: str, name: str = None, published_date: str = None, director: str = None,
+    def __init__(self, movieID: str, name: str = None, publishedDate: str = None, director: str = None,
                  genre: str = None, description: str = None, rating: int = None):
         """
         creates a new movie object
@@ -17,8 +17,8 @@ class Movie(AbstractModel):
         :type movieID:
         :param name:
         :type name:
-        :param published_date:
-        :type published_date:
+        :param publishedDate:
+        :type publishedDate:
         :param director:
         :type director:
         :param genre:
@@ -26,7 +26,7 @@ class Movie(AbstractModel):
         """
         self.movieID = movieID
         self.name = name
-        self.published_date = published_date
+        self.publishedDate = publishedDate
         self.director = director
         self.genre = genre
         self.description = description
@@ -41,7 +41,7 @@ class Movie(AbstractModel):
         return {
             "movieID": self.movieID,
             "name": self.name,
-            "published_date": self.published_date,
+            "published_date": self.publishedDate,
             "director": self.director,
             "genre": self.genre
         }
