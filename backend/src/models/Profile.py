@@ -5,6 +5,12 @@ from PyDataOpsKit import AbstractModel
 
 @dataclass
 class Profile(AbstractModel):
+    """
+    This Profile class models the Profile entity in the database.
+    Whenever we get a Profile info from the database, we will create a Profile object.
+    Whenever we want to create a new Profile, we will create a Profile object, and then add it to the database
+    via the ProfileRepository.
+    """
 
     def __init__(self,
                  userID,
@@ -18,6 +24,31 @@ class Profile(AbstractModel):
                  sexuality=None,
                  interests=None,
                  favoriteMovies=None):
+        """
+        creates a new Profile object
+        :param userID:
+        :type userID:
+        :param visibility:
+        :type visibility:
+        :param firstName:
+        :type firstName:
+        :param lastName:
+        :type lastName:
+        :param bio:
+        :type bio:
+        :param gender:
+        :type gender:
+        :param age:
+        :type age:
+        :param location:
+        :type location:
+        :param sexuality:
+        :type sexuality:
+        :param interests:
+        :type interests:
+        :param favoriteMovies:
+        :type favoriteMovies:
+        """
         self.userID = userID
         self.visibility = visibility
         self.firstName = firstName
@@ -31,6 +62,11 @@ class Profile(AbstractModel):
         self.favoriteMovies = favoriteMovies
 
     def toDict(self) -> dict:
+        """
+        converts the Profile object to a dictionary
+        :return:
+        :rtype:
+        """
         return {
             "userID": self.userID,
             "visibility": self.visibility,
@@ -44,6 +80,3 @@ class Profile(AbstractModel):
             "interests": self.interests,
             "favoriteMovies": self.favoriteMovies
         }
-
-    def toJSON(self):
-        return json.dumps(self.toDict())

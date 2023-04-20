@@ -26,11 +26,9 @@ class ProfileRepository(AbstractRepository):
                     favoriteMovies VARCHAR(255)
                 )
             """)
-            return
+            print("Profile table created successfully")
         except Exception as e:
             print("Error while creating the 'profiles' table:", e)
-
-        print("Profile table created successfully")
 
     def add(self, profile):
         """

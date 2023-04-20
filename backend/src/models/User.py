@@ -4,7 +4,6 @@ Copyright by OEUG99
 
 import re
 import uuid
-from abc import ABC
 from dataclasses import dataclass
 import bcrypt
 from PyDataOpsKit.AbstractModel import AbstractModel
@@ -23,6 +22,15 @@ class User(AbstractModel):
     raw_password = None
 
     def __init__(self, email, password, userID=None):
+        """
+        Creates a new user object.
+        :param email:
+        :type email:
+        :param password:
+        :type password:
+        :param userID:
+        :type userID:
+        """
 
         if userID is not None:
             # if an id is provided, we can assume the password is hashed.
@@ -45,14 +53,23 @@ class User(AbstractModel):
         self.password = hashPassword(password)
 
     def toDict(self) -> dict:
+        """
+        Converts the user object to a dictionary.
+        :return:
+        :rtype:
+        """
         return {
             "id": self.id,
             "email": self.email,
             "password": self.password
         }
 
-
     def __repr__(self):
+        """
+        Returns a string representation of the user object.
+        :return:
+        :rtype:
+        """
         return '<User %r>' % self.email
 
 
@@ -70,6 +87,13 @@ def validateUsername(username) -> bool:
 
 
 def validatePassword(raw_password) -> bool:
+    """
+    Validates the password meets the minimum requirements.
+    :param raw_password:
+    :type raw_password:
+    :return:
+    :rtype:
+    """
     print(len(raw_password))
 
     # Password must be at least 8 characters long
@@ -87,6 +111,13 @@ def validatePassword(raw_password) -> bool:
 
 
 def hashPassword(raw_password) -> str:
-    # Hashing passwords with random salt for extra security.
+    """
+    Hashes the password with bcrypt.
+    :param raw_password:
+    :type raw_password:
+    :return:
+    :rtype:
+    """
+
     password_hash = bcrypt.hashpw(raw_password.encode(), bcrypt.gensalt())
     return password_hash.decode()  # returning hash with salt.
