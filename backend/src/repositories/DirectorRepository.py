@@ -24,7 +24,7 @@ class DirectorRepository(AbstractRepository):
                     isFavoriteOf VARCHAR(255)
                     )
                 """)
-            print("Director table created successfully")
+            print("Director table created successfully.")
         except Exception as e:
             print("Error while creating the 'directors' table:", e)
 
