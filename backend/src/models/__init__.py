@@ -3,3 +3,4 @@ from .Profile import Profile
 from .Movie import Movie
 from .Director import Director
 from .Genre import Genre
+from .Actor import Actor
