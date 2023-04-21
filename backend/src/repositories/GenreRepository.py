@@ -28,7 +28,7 @@ class GenreRepository(AbstractRepository):
         except Exception as e:
             print("Error while creating the 'genres' table:", e)
 
-    def add(self, genre: Genre):
+    def add(self, genre):
         """
         Adds a genre to the database
         :param genre:
@@ -41,21 +41,33 @@ class GenreRepository(AbstractRepository):
         VALUES (%s, %s, %s, %s, %s)
         """
 
-        self.db.query(addSQL, (genre.genreName,
+        self.db.query(addSQL, (genre.name,
                                genre.actedInGenre,
                                genre.belongsToGenre,
                                genre.hasDirectedGenre,
                                genre.isFavoriteOf))
 
-    def update(self, obj):
+    def update(self, genre):
         """
         Updates a genre in the database, returns the updated Genre object
-        :param obj:
-        :type obj:
+        :param genre:
+        :type genre:
         :return:
         :rtype:
         """
-        pass
+        updateSQL = """
+                   UPDATE genres
+                   SET actedInGenre = %s,
+                       belongsToGenre = %s,
+                       hasDirectedGenre = %s,
+                       isFavoriteOf = %s,
+                   WHERE genreName = %s
+                   """
+        self.db.query(updateSQL,
+                      (genre.actedInGenre,
+                       genre.belongsToGenre,
+                       genre.hasDirectedGenre,
+                       genre.isFavoriteOf))
 
     def delete(self, genre):
         """
@@ -96,10 +108,26 @@ class GenreRepository(AbstractRepository):
     def getAll(self):
         """
         Gets all genres from the database
-        :return:
-        :rtype:
+        :return: list of all Genre objects in the database
+        :rtype: list
         """
-        pass
+        getAllSQL = """
+        SELECT * FROM genres
+        """
+
+        genres = []
+
+        genreTuples = self.db.query(getAllSQL)
+
+        for genreTuple in genreTuples:
+            genre = Genre(genreName=genreTuple[0],
+                          actedInGenre=genreTuple[1],
+                          belongsToGenre=genreTuple[2],
+                          hasDirectedGenre=genreTuple[3],
+                          isFavoriteOf=genreTuple[4])
+            genres.append(genre)
+
+        return genres
 
     def getList(self, limit, offset=None):
         pass
