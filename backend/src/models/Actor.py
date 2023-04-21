@@ -1,6 +1,9 @@
+from dataclasses import dataclass
+
 from PyDataOpsKit import AbstractModel
 
 
+@dataclass
 class Actor(AbstractModel):
     def __init__(self, id, firstName, lastName, age):
         self.id = id
