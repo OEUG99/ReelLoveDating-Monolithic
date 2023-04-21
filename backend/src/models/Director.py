@@ -12,7 +12,7 @@ class Director(AbstractModel):
     """
     def __init__(self, directorID, firstName=None, lastName=None, directedMovie=None, directedInGenre=None,
                  isFavoriteOf=None):
-        self.directorID = directorID
+        self.id = directorID
         self.firstName = firstName
         self.lastName = lastName
         self.directedMovie = directedMovie
@@ -21,10 +21,13 @@ class Director(AbstractModel):
 
     def toDict(self) -> dict:
         return {
-            "directorID": self.directorID,
+            "directorID": self.id,
             "firstName": self.firstName,
             "lastName": self.lastName,
             "directedMovie": self.directedMovie,
             "directedInGenre": self.directedInGenre,
             "isFavoriteOf": self.isFavoriteOf
         }
+
+    def __repr__(self):
+        return self.id
