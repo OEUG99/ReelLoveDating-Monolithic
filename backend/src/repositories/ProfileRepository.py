@@ -38,11 +38,11 @@ class ProfileRepository(AbstractRepository):
         :return:
         :rtype:
         """
-        print(f"Adding profile for user {profile.userID} to the database")
+        print(f"Adding profile for user {profile.id} to the database")
         self.db.query("""
         INSERT INTO profiles (id, visibility, firstName, lastName, bio, gender, age, location, sexuality, interests, favoriteMovies)
         VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-        """, (profile.userID, profile.visibility, profile.firstName, profile.lastName, profile.bio, profile.gender,
+        """, (profile.id, profile.visibility, profile.firstName, profile.lastName, profile.bio, profile.gender,
               profile.age, profile.location, profile.sexuality, profile.interests, profile.favoriteMovies))
 
     def update(self, profile):
@@ -53,7 +53,7 @@ class ProfileRepository(AbstractRepository):
         :return:
         :rtype:
         """
-        print(f"Updating profile for user {profile.userID} in the database")
+        print(f"Updating profile for user {profile.id} in the database")
 
         updateSQL = """
            UPDATE profiles
@@ -81,7 +81,7 @@ class ProfileRepository(AbstractRepository):
                        profile.sexuality,
                        profile.interests,
                        profile.favoriteMovies,
-                       profile.userID))
+                       profile.id))
 
     def delete(self, profile):
         pass

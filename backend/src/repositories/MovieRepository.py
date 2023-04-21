@@ -42,7 +42,7 @@ class MovieRepository(AbstractRepository):
         VALUES (%s, %s, %s, %s, %s, %s, %s)
         """
 
-        self.db.query(addSQL, (movie.movieID,
+        self.db.query(addSQL, (movie.id,
                                movie.name,
                                movie.publishedDate,
                                movie.director,
@@ -71,7 +71,7 @@ class MovieRepository(AbstractRepository):
         deleteSQL = """
         DELETE FROM movies WHERE movieID = %s
         """
-        self.db.query(deleteSQL, (movie.movieID,))
+        self.db.query(deleteSQL, (movie.id,))
 
     def get(self, movieID):
         """
