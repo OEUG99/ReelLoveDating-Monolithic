@@ -6,3 +6,4 @@ mysql-connector-python~=8.0.32
 boto3~=1.26.113
 botocore~=1.29.113
 git+https://github.com/OEUG99/PyDataOpsKit.git@v1.0.1-alpha-r6#egg=PyDataOpsKit
+python-dotenv~=1.0.0
