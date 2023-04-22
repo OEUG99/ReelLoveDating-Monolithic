@@ -2,7 +2,7 @@ import uuid
 from dataclasses import dataclass
 from PyDataOpsKit import AbstractModel
 
-from backend.src.models import Director
+from backend.src.models import Director, Actor
 
 
 @dataclass
@@ -14,29 +14,31 @@ class Movie(AbstractModel):
     via the movieRepository.
     """
 
-    def __init__(self, name: str = None, publishedDate: str = None, director: Director = None,
-                 genre: str = None, description: str = None, rating: int = None, movieID: str = None):
+    def __init__(self, name: str = None, publishedDate: str = None, director: Director = None, leadActor: Actor = None,
+                 genre: str = None, description: str = None, rating: int = None, id: str = None):
         """
         creates a new movie object
-        :param movieID:
-        :type movieID:
+        :param id:
+        :type id:
         :param name:
         :type name:
         :param publishedDate:
         :type publishedDate:
-        :param director:
-        :type director:
+        :param directorID:
+        :type directorID:
         :param genre:
         :type genre:
         """
 
-        if movieID is None:
-            movieID = str(uuid.uuid4())
 
-        self.id = movieID
+        if id is None:
+            id = str(uuid.uuid4())
+
+        self.id = id
         self.name = name
         self.publishedDate = publishedDate
         self.director = director
+        self.leadActor = leadActor
         self.genre = genre
         self.description = description
         self.rating = rating
@@ -50,8 +52,9 @@ class Movie(AbstractModel):
         return {
             "id": self.id,
             "name": self.name,
-            "published_date": self.publishedDate,
-            "director": self.director,
+            "publishedDate": self.publishedDate,
+            "directorID": self.director.id,
+            "leadActorID": self.leadActor.id,
             "genre": self.genre
         }
 
