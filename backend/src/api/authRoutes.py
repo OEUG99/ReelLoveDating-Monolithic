@@ -111,3 +111,11 @@ def validate() -> Response:
         return Response(response=f"your access to user {decodedToken.get('userID')} is valid", status=200)
     except Exception as e:
         return Response(response=str(e), status=400)
+
+@bp.route('/health', methods=['GET'])
+def health() -> Response:
+    """ The health endpoint is used to check if the server is running.
+    :return: HTTP Response
+    :rtype: Response
+    """
+    return Response(response="Server is running", status=200)
