@@ -16,7 +16,7 @@ class DirectorRepository(AbstractRepository):
         try:
             self.db.query("""
                 CREATE TABLE IF NOT EXISTS directors (
-                    directorID VARCHAR(255) PRIMARY KEY,
+                    id VARCHAR(255) PRIMARY KEY,
                     firstName VARCHAR(255),
                     lastName VARCHAR(255),
                     directedMovie VARCHAR(255),
@@ -37,9 +37,10 @@ class DirectorRepository(AbstractRepository):
         :rtype:
         """
         addSQL = """
-        INSERT INTO directors (directorID, firstName, lastName, directedMovie, directedInGenre, isFavoriteOf)
+        INSERT INTO directors (id, firstName, lastName, directedMovie, directedInGenre, isFavoriteOf)
         VALUES (%s, %s, %s, %s, %s, %s)
         """
+        print(director.id, "HERE")
 
         self.db.query(addSQL, (director.id,
                                director.firstName,
@@ -80,7 +81,7 @@ class DirectorRepository(AbstractRepository):
         :rtype:
         """
         getSQL = """
-        SELECT * FROM directors WHERE directorID = %s
+        SELECT * FROM directors WHERE id = %s
         """
 
         directorTuple = self.db.query(getSQL, (directorID,))[0]
@@ -111,3 +112,28 @@ class DirectorRepository(AbstractRepository):
 
     def getByAttribute(self, attribute):
         pass
+
+    def getByFirstNameAndLastName(self, directorFirstName, directorLastName):
+        """
+        Gets a director from the database via its first and last name
+        :param directorFirstName:
+        :type directorFirstName:
+        :param directorLastName:
+        :type directorLastName:
+        :return:
+        :rtype:
+        """
+
+        directorTuple = self.db.query("""
+        SELECT * FROM directors WHERE firstName = %s AND lastName = %s
+        """, (directorFirstName, directorLastName))
+
+        directorTuple = directorTuple[0] if directorTuple else None
+
+        if directorTuple:
+            return Director(directorID=directorTuple[0],
+                            firstName=directorTuple[1],
+                            lastName=directorTuple[2],
+                            directedMovie=directorTuple[3],
+                            directedInGenre=directorTuple[4],
+                            isFavoriteOf=directorTuple[5])
