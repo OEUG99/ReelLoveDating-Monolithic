@@ -22,7 +22,7 @@ class Director(AbstractModel):
 
     def toDict(self) -> dict:
         return {
-            "directorID": self.id,
+            "id": self.id,
             "firstName": self.firstName,
             "lastName": self.lastName,
             "directedMovie": self.directedMovie,
