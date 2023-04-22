@@ -102,7 +102,9 @@ class ProfileRepository(AbstractRepository):
         """
         query = self.db.query("""
             SELECT * FROM profiles WHERE id = %s LIMIT 1;
-        """, (userID,))[0]
+        """, (userID,))
+
+        query = query[0] if query else None
 
         print(query)
 

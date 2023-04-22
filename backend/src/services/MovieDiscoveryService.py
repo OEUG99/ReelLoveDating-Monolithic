@@ -1,4 +1,4 @@
-from backend.src.models import Movie, Director, Actor
+from backend.src.models import Movie, Director, Actor, Genre
 from imdb import IMDb
 
 from backend.src.repositories import MovieRepository
@@ -49,6 +49,30 @@ class MovieDiscovery:
             print(f"lead Actor LastName: {leadActorLastName}")
             print("")
 
+            # Check if the director exists in the database already if not create a new one.
+            director = self.getDirector(directorFirstName, directorLastName)
+            print(director)
+            if director is None:
+                director = Director(firstName=directorFirstName,
+                                    lastName=directorLastName)
+                self.addDirector(director)
+
+            # Check if the actor exists in the database already if not create a new one.
+            leadActor = self.getActor(leadActorFirstName, leadActorLastName)
+            if leadActor is None:
+                leadActor = Actor(firstName=leadActorFirstName,
+                                  lastName=leadActorLastName,
+                                  age=None,
+
+                                  )
+                self.addActor(leadActor)
+
+            # Check if the movie exists in the database already if not create a new one.
+            movie = self.getMovie(title, year)
+            if movie is None:
+                movie = Movie(title, year, director, leadActor, genre, description)
+                self.addMovie(movie)
+
     # Note: we will implement by wrapping the repository methods.
     # later if we wanted to we can easily change this to act as a microservice by replacing the repositories with
     # calls to a REST API.
@@ -64,11 +88,35 @@ class MovieDiscovery:
         """
         DirectorRepository().add(director)
 
+    def getDirector(self, firstName, LastName):
+        """
+        Gets a Director object from the database.
+        """
+        return DirectorRepository().getByFirstNameAndLastName(firstName, LastName)
+
     def addActor(self, actor: Actor):
         """
         Adds an Actor object to the database.
         """
         ActorRepository().add(actor)
+
+    def getActor(self, leadActorFirstName, leadActorLastName):
+        """
+        Gets an Actor object from the database.
+        """
+        return ActorRepository().getByFirstNameAndLastName(leadActorFirstName, leadActorLastName)
+
+    def getMovie(self, title, year):
+        """
+        Gets a Movie object from the database.
+        :param title:
+        :type title:
+        :param year:
+        :type year:
+        :return:
+        :rtype:
+        """
+        return MovieRepository().getByTitleAndYear(title, year)
 
 
 if __name__ == '__main__':
