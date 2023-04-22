@@ -1,3 +1,4 @@
+import uuid
 from dataclasses import dataclass
 from PyDataOpsKit.AbstractModel import AbstractModel
 
@@ -10,9 +11,9 @@ class Director(AbstractModel):
     Whenever we want to create a new Director, we will create a Director object, and then add it to the database
     via the DirectorRepository.
     """
-    def __init__(self, directorID, firstName=None, lastName=None, directedMovie=None, directedInGenre=None,
+    def __init__(self, directorID=None, firstName=None, lastName=None, directedMovie=None, directedInGenre=None,
                  isFavoriteOf=None):
-        self.id = directorID
+        self.id = directorID or str(uuid.uuid4())    # if directorID is None, then generate a new one and assign new uuid
         self.firstName = firstName
         self.lastName = lastName
         self.directedMovie = directedMovie
