@@ -1,3 +1,4 @@
+import uuid
 from dataclasses import dataclass
 
 from PyDataOpsKit import AbstractModel
@@ -5,8 +6,8 @@ from PyDataOpsKit import AbstractModel
 
 @dataclass
 class Actor(AbstractModel):
-    def __init__(self, id, firstName, lastName, age):
-        self.id = id
+    def __init__(self, id=None, firstName=None, lastName=None, age=None):
+        self.id = id or str(uuid.uuid4())
         self.firstName = firstName
         self.lastName = lastName
         self.age = age
