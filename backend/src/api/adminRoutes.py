@@ -1,5 +1,5 @@
 from flask import Blueprint, request, Response
-from backend.src.services.MovieDiscoveryService import MovieDiscoveryService
+from backend.src.services.MovieDiscoveryService import MovieDiscovery
 
 bp = Blueprint('auth', __name__, url_prefix='/api/admin')
 
