@@ -79,6 +79,7 @@ def login() -> Response:
     try:
         token = generateToken(user)
         status_code = 200
+        print(token)
         return Response(response=token,
                         status=status_code)
     except ValueError as e:
@@ -107,8 +108,6 @@ def validate() -> Response:
             # if decode fails, we will return the Result object it creates.
             return decodedToken
 
-        # if decode is a success it will return a string containing the token.
-        return Response(response=f"your access to user {decodedToken.get('userID')} is valid", status=200)
     except Exception as e:
         return Response(response=str(e), status=400)
 
