@@ -8,7 +8,7 @@ bp = Blueprint('auth', __name__, url_prefix='/api/admin')
 def updateMovies() -> Response:
     # todo: add authentication to this endpoint ensuring only admins can access it.
     try:
-        MovieDiscoveryService().updateMovies()
+        MovieDiscovery().updateMovies()
         return Response(status=200)
     except Exception as e:
         return Response(response=str(e), status=400)
