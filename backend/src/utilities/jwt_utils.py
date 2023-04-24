@@ -42,11 +42,15 @@ def decodeToken(encodedToken):
     """
 
     try:
+        print("Decoding token...")
+        print(encodedToken)
         decodedToken = jwt.decode(encodedToken, getSecretKey(), algorithms=["HS256"])
         return decodedToken
 
     except jwt.ExpiredSignatureError:
+        print("Token expired.")
         return Response(response="Token expired.", status=401)
 
     except jwt.InvalidTokenError:
+        print("Invalid Token.")
         return Response(response="Invalid Token.", status=401)
