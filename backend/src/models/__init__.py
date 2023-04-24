@@ -4,3 +4,4 @@ from .Movie import Movie
 from .Director import Director
 from .Genre import Genre
 from .Actor import Actor
+from .Like import Like

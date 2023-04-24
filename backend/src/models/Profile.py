@@ -23,7 +23,9 @@ class Profile(AbstractModel):
                  location=None,
                  sexuality=None,
                  interests=None,
-                 favoriteMovies=None):
+                 favoriteMovies=None,
+                 favoriteActor=None,
+                 favoriteDirector=None):
         """
         creates a new Profile object
         :param userID:
@@ -60,6 +62,8 @@ class Profile(AbstractModel):
         self.sexuality = sexuality
         self.interests = interests
         self.favoriteMovies = favoriteMovies
+        self.favoriteActor = favoriteActor
+        self.favoriteDirector = favoriteDirector
 
     def toDict(self) -> dict:
         """
@@ -78,5 +82,7 @@ class Profile(AbstractModel):
             "location": self.location,
             "sexuality": self.sexuality,
             "interests": self.interests,
-            "favoriteMovies": self.favoriteMovies
+            "favoriteMovies": self.favoriteMovies,
+            "favoriteActor": self.favoriteActor,
+            "favoriteDirector": self.favoriteDirector
         }

@@ -41,6 +41,9 @@ def updateProfile() -> Response:
     profile.age = data.get('age')
     profile.interests = data.get('interests')
     profile.sexuality = data.get('sexuality')
+    profile.favoriteMovies = data.get('favoriteMovies')
+    profile.favoriteActor = data.get('favoriteActor')
+    profile.favoriteDirector = data.get('favoriteDirector')
 
     # updating profile in DB
     ProfileRepository().update(profile)
@@ -51,12 +54,13 @@ def updateProfile() -> Response:
 @bp.route('/<userID>', methods=['GET'])
 def getProfile(userID: str) -> Response:
     output = ProfileRepository().getByUserID(userID)
+    print(output.toJSON())
 
     # if no user is found, return 204
     if output is None:
         return Response(status=204)
 
-    return Response(str(output), status=200)
+    return Response(output.toJSON(), status=200)
 
 
 @bp.route('/random', methods=['POST'])

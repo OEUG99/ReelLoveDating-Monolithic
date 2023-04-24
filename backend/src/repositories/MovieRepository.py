@@ -84,19 +84,22 @@ class MovieRepository(AbstractRepository):
         :rtype:
         """
         getSQL = """
-        SELECT * FROM movies WHERE movieID = %s
+        SELECT * FROM movies WHERE id = %s
         """
 
         movieTuple = self.db.query(getSQL, (movieID,))[0]
 
+        print(movieTuple)
+
         if movieTuple:
             return Movie(id=movieTuple[0],
-                         name=movieTuple[1],
-                         publishedDate=movieTuple[2],
-                         directorID=movieTuple[3],
-                         genre=movieTuple[4],
-                         description=movieTuple[5],
-                         rating=movieTuple[6])
+                            name=movieTuple[1],
+                            publishedDate=movieTuple[2],
+                            director=DirectorRepository().get(movieTuple[3]),
+                            leadActor=ActorRepository().get(movieTuple[4]),
+                            genre=movieTuple[5],
+                            description=movieTuple[6],
+                            rating=movieTuple[7])
         else:
             return None
 

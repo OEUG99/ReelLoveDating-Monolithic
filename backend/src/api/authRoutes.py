@@ -1,4 +1,4 @@
-from flask import Blueprint, request, Response
+from flask import Blueprint, request, Response, jsonify
 
 from backend.src.models.Profile import Profile
 from backend.src.models.User import User
@@ -106,7 +106,9 @@ def validate() -> Response:
 
         if isinstance(decodedToken, Response):
             # if decode fails, we will return the Result object it creates.
-            return decodedToken
+            return Response(response=str(decodedToken))
+
+        return jsonify(decodedToken)
 
     except Exception as e:
         return Response(response=str(e), status=400)

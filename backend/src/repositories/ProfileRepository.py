@@ -23,7 +23,9 @@ class ProfileRepository(AbstractRepository):
                     location VARCHAR(255),
                     sexuality VARCHAR(255),
                     interests VARCHAR(255),
-                    favoriteMovies VARCHAR(255)
+                    favoriteMovies VARCHAR(255),
+                    favoriteActor VARCHAR(255),
+                    favoriteDirector VARCHAR(255)
                 )
             """)
             print("Profile table created successfully")
@@ -40,10 +42,11 @@ class ProfileRepository(AbstractRepository):
         """
         print(f"Adding profile for user {profile.id} to the database")
         self.db.query("""
-        INSERT INTO profiles (id, visibility, firstName, lastName, bio, gender, age, location, sexuality, interests, favoriteMovies)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        INSERT INTO profiles (id, visibility, firstName, lastName, bio, gender, age, location, sexuality, interests, favoriteMovies, favoriteActor, favoriteDirector)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """, (profile.id, profile.visibility, profile.firstName, profile.lastName, profile.bio, profile.gender,
-              profile.age, profile.location, profile.sexuality, profile.interests, profile.favoriteMovies))
+              profile.age, profile.location, profile.sexuality, profile.interests, profile.favoriteMovies,
+              profile.favoriteActor, profile.favoriteDirector))
 
     def update(self, profile):
         """
@@ -66,7 +69,9 @@ class ProfileRepository(AbstractRepository):
                location = %s,
                sexuality = %s,
                interests = %s,
-               favoriteMovies = %s
+               favoriteMovies = %s,
+               favoriteActor = %s,
+               favoriteDirector = %s
            WHERE id = %s
            """
 
@@ -81,6 +86,8 @@ class ProfileRepository(AbstractRepository):
                        profile.sexuality,
                        profile.interests,
                        profile.favoriteMovies,
+                       profile.favoriteActor,
+                       profile.favoriteDirector,
                        profile.id))
 
     def delete(self, profile):
@@ -113,7 +120,15 @@ class ProfileRepository(AbstractRepository):
                            visibility=query[1],
                            firstName=query[2],
                            lastName=query[3],
-                           bio=query[4])
+                           bio=query[4],
+                           gender=query[5],
+                           age=query[6],
+                           location=query[7],
+                           sexuality=query[8],
+                           interests=query[9],
+                           favoriteMovies=query[10],
+                           favoriteActor=query[11],
+                           favoriteDirector=query[12])
         else:
             return None
 
