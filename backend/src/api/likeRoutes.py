@@ -1,6 +1,7 @@
 from flask import Blueprint, request, Response
 from backend.src.models.Like import Like
 from backend.src.repositories.LikeRepository import LikeRepository
+from backend.src.utilities import decodeToken
 
 bp = Blueprint('like', __name__, url_prefix='/api/like')
 
@@ -11,11 +12,18 @@ def addLike() -> Response:
     :return: HTTP Response
     :rtype: Response
     """
+
+    # decode token first
     data = request.get_json()
-    userID = data.get('userID')
-    secondaryUserID = data.get('secondaryUserID')
+    token = data.get('token')
+    decoded_token = decodeToken(token)
+    userID = decoded_token['userID']
+    secondUserID = data.get('secondUserID')
 
-    like = Like(userID=userID, secondaryUserID=secondaryUserID)
-    LikeRepository().add(like)
-
-    return Response(status=200)
+    try:
+        like = Like(userID, secondUserID)
+        LikeRepository().add(like)
+        return Response(status=200)
+    except ValueError as e:
+        return Response(response=str(e),
+                        status=400)
