@@ -94,16 +94,16 @@ class GenreRepository(AbstractRepository):
         SELECT * FROM genres WHERE genreName = %s
         """
 
-        genreTuple = self.db.query(getSQL, (genreName,))[0]
+        query = self.db.query(getSQL, (genreName,))
 
-        if genreTuple:
-            return Genre(genreName=genreTuple[0],
-                         actedInGenre=genreTuple[1],
-                         belongsToGenre=genreTuple[2],
-                         hasDirectedGenre=genreTuple[3],
-                         isFavoriteOf=genreTuple[4])
-        else:
-            return None
+        query = query[0] if query else None
+
+        if query:
+            return Genre(genreName=query[0],
+                         actedInGenre=query[1],
+                         belongsToGenre=query[2],
+                         hasDirectedGenre=query[3],
+                         isFavoriteOf=query[4])
 
     def getAll(self):
         """

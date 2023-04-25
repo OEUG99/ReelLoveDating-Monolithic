@@ -6,7 +6,7 @@ bp = Blueprint('movie', __name__, url_prefix='/api/movie')
 
 @bp.route('/<movieID>', methods=['GET'])
 def getMovie(movieID: str) -> Response:
-    output = MovieRepository().get(movieID)
+    output = MovieRepository().getAllMovies(movieID)
 
     # if no user is found, return 204
     if output is None:
@@ -14,16 +14,6 @@ def getMovie(movieID: str) -> Response:
 
     return Response(output.toJSON(), status=200)
 
-@bp.route('/getall', methods=['GET'])
-def getAllMovies() -> Response:
-    output = MovieRepository().getAll()
-
-
-    # if no user is found, return 204
-    if output is None:
-        return Response(status=204)
-
-    return Response(output.toJSON(), status=200)
 
 @bp.route('/allNames', methods=['GET'])
 def getNames() -> Response:
@@ -33,8 +23,6 @@ def getNames() -> Response:
     if not movies:
         return Response(status=204)
 
-    # convert list of dictionaries
-    movie_dicts = [movie.toDict() for movie in movies]
-
+    print(movies)
     # return JSON response
-    return jsonify(movie_dicts), 200
+    return jsonify(movies), 200

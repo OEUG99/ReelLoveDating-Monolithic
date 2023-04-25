@@ -132,14 +132,13 @@ class MovieRepository(AbstractRepository):
         :return: a list of movie objects
         """
 
-        movieTuples = self.db.query("""
-               SELECT id, name, publishedDate FROM movies
-               """)
 
-        movies = []
-        for movieTuple in movieTuples:
-            movies.append(Movie(id=movieTuple[0],
-                                name=movieTuple[1],
-                                publishedDate=movieTuple[2]))
+        query = self.db.query("SELECT * FROM movies")
 
-        return movies
+        list = [Movie(id=movie[0],
+                      name=movie[1],)
+                for movie in query]
+
+        # make into son serializable where its just name and id
+        return [movie.__dict__ for movie in list]
+

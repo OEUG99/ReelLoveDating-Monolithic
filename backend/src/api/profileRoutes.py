@@ -31,7 +31,7 @@ def updateProfile() -> Response:
         return decodedToken
 
     # get profile by ID and updating it
-    profile = Profile(decodedToken['user_id'])
+    profile = Profile(decodedToken['userID'])
     profile.firstName = data.get('firstName')
     profile.lastName = data.get('lastName')
     profile.bio = data.get('bio')
