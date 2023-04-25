@@ -13,3 +13,13 @@ def getMovie(movieID: str) -> Response:
         return Response(status=204)
 
     return Response(output.toJSON(), status=200)
+
+@bp.route('/getall', methods=['GET'])
+def getAllMovies() -> Response:
+    output = MovieRepository().getAll()
+
+    # if no user is found, return 204
+    if output is None:
+        return Response(status=204)
+
+    return Response(output.toJSON(), status=200)
