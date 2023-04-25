@@ -13,3 +13,17 @@ def getActor(actorID: str) -> Response:
         return Response(status=204)
 
     return Response(output.toJSON(), status=200)
+
+@bp.route('/allNames', methods=['GET'])
+def getNames() -> Response:
+    actors = ActorRepository().getAllActors()
+
+    # if no matches are found, return 204
+    if not actors:
+        return Response(status=204)
+
+    # convert list of dictionaries
+    actors_dicts = [actor.toDict() for actor in actors]
+
+    # return JSON response
+    return jsonify(actors_dicts)

@@ -14,6 +14,7 @@ app.register_blueprint(movieRoutes.bp)
 app.register_blueprint(matchRoutes.bp)
 
 
+
 @app.route('/')
 def healthCheck():
     return 'HEALTHY'
