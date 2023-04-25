@@ -84,7 +84,7 @@ class MovieRepository(AbstractRepository):
         :rtype:
         """
         getSQL = """
-        SELECT * FROM movies WHERE id = %s
+        SELECT * FROM movies WHERE id = %s LIMIT 1
         """
 
         movieTuple = self.db.query(getSQL, (movieID,))[0]
@@ -109,7 +109,13 @@ class MovieRepository(AbstractRepository):
         :return:
         :rtype:
         """
-        pass
+        query = self.db.query("SELECT * FROM movies")
+
+        list = [Movie(id=movie[0],
+                      name=movie[1]) for movie in query]
+
+        # make into json serializable where its just name and id
+        return [movie.__dict__ for movie in list]
 
     def getList(self, limit, offset=None):
         pass

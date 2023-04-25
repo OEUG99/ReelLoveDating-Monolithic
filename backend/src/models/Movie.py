@@ -30,7 +30,6 @@ class Movie(AbstractModel):
         :type genre:
         """
 
-
         if id is None:
             id = str(uuid.uuid4())
 

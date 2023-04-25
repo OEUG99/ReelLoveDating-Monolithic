@@ -18,6 +18,7 @@ def getMovie(movieID: str) -> Response:
 def getAllMovies() -> Response:
     output = MovieRepository().getAll()
 
+
     # if no user is found, return 204
     if output is None:
         return Response(status=204)
@@ -36,4 +37,4 @@ def getNames() -> Response:
     movie_dicts = [movie.toDict() for movie in movies]
 
     # return JSON response
-    return jsonify(movie_dicts)
+    return jsonify(movie_dicts), 200
