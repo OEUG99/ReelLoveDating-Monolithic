@@ -84,7 +84,7 @@ class MovieRepository(AbstractRepository):
         :rtype:
         """
         getSQL = """
-        SELECT * FROM movies WHERE id = %s
+        SELECT * FROM movies WHERE id = %s LIMIT 1
         """
 
         movieTuple = self.db.query(getSQL, (movieID,))[0]
@@ -109,7 +109,16 @@ class MovieRepository(AbstractRepository):
         :return:
         :rtype:
         """
-        pass
+        query = self.db.query("SELECT * FROM movies")
+
+        return [Movie(id=movie[0],
+                      name=movie[1],
+                      publishedDate=movie[2],
+                      director=DirectorRepository().get(movie[3]),
+                      leadActor=ActorRepository().get(movie[4]),
+                      genre=movie[5],
+                      description=movie[6],
+                      rating=movie[7]) for movie in query]
 
     def getList(self, limit, offset=None):
         pass
