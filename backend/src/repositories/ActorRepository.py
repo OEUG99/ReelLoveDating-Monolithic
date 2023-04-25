@@ -14,11 +14,13 @@ class ActorRepository(AbstractRepository):
             )
         """)
 
+
     def add(self, actor):
         self.db.query("""
             INSERT INTO actors (id, firstName, lastName, age)
             VALUES (%s, %s, %s, %s)
         """, (actor.id, actor.firstName, actor.lastName, actor.age))
+
 
     def update(self, actor):
         self.db.query("""
@@ -41,6 +43,7 @@ class ActorRepository(AbstractRepository):
         else:
             return None
 
+
     def getAll(self):
         pass
 
@@ -53,20 +56,12 @@ class ActorRepository(AbstractRepository):
     def getByAttribute(self, attribute):
         pass
 
-    def getAllActors(self):
-        """
-        Gets all actors from the database with their ID, first name, and last name.
-        :return: a list of actors objects
-        """
+    def getByFirstNameAndLastName(self, leadActorFirstName, leadActorLastName):
+        query = self.db.query("""
+            SELECT * FROM actors WHERE firstName = %s AND lastName = %s LIMIT 1
+        """, (leadActorFirstName, leadActorLastName))
 
-        actorTuples = self.db.query("""
-               SELECT id, firstName, lastName FROM directors
-               """)
+        query = query[0] if query else None
 
-        actors = []
-        for actorTuple in actorTuples:
-            actors.append(Actor(id=actorTuple[0],
-                                firstName=actorTuple[1],
-                                lastName=actorTuple[2]))
-
-        return actors
+        if query:
+            return Actor(id=query[0], firstName=query[1], lastName=query[2], age=query[3])
