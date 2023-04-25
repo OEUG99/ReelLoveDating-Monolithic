@@ -111,7 +111,7 @@ class MovieRepository(AbstractRepository):
         """
         query = self.db.query("SELECT * FROM movies")
 
-        return [Movie(id=movie[0],
+        list = [Movie(id=movie[0],
                       name=movie[1],
                       publishedDate=movie[2],
                       director=DirectorRepository().get(movie[3]),
@@ -119,6 +119,9 @@ class MovieRepository(AbstractRepository):
                       genre=movie[5],
                       description=movie[6],
                       rating=movie[7]) for movie in query]
+
+        # make into json serializable
+        return [movie.__dict__ for movie in list]
 
     def getList(self, limit, offset=None):
         pass
