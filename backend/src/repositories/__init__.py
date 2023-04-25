@@ -4,5 +4,6 @@ from .ProfileRepository import ProfileRepository
 from .DirectorRepository import DirectorRepository
 from .ActorRepository import ActorRepository
 from .LikeRepository import LikeRepository
+from .MatchRepository import MatchRepository
 
 
