@@ -23,4 +23,4 @@ def getAllMovies() -> Response:
     if output is None:
         return Response(status=204)
 
-    return Response(output, status=200)
+    return jsonify(output), 200
