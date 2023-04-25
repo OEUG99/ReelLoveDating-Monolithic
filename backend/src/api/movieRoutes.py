@@ -23,4 +23,18 @@ def getAllMovies() -> Response:
     if output is None:
         return Response(status=204)
 
-    return jsonify(output), 200
+    return Response(output.toJSON(), status=200)
+
+@bp.route('/allNames', methods=['GET'])
+def getNames() -> Response:
+    movies = MovieRepository().getAllMovies()
+
+    # if no matches are found, return 204
+    if not movies:
+        return Response(status=204)
+
+    # convert list of dictionaries
+    movie_dicts = [movie.toDict() for movie in movies]
+
+    # return JSON response
+    return jsonify(movie_dicts), 200

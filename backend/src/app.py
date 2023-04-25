@@ -1,6 +1,6 @@
 from flask import Flask
 
-from backend.src.api import authRoutes, profileRoutes, likeRoutes, actorRoutes, directorRoutes, movieRoutes
+from backend.src.api import authRoutes, profileRoutes, likeRoutes, actorRoutes, directorRoutes, movieRoutes, matchRoutes
 
 app = Flask(__name__)
 
@@ -11,6 +11,9 @@ app.register_blueprint(likeRoutes.bp)
 app.register_blueprint(actorRoutes.bp)
 app.register_blueprint(directorRoutes.bp)
 app.register_blueprint(movieRoutes.bp)
+app.register_blueprint(matchRoutes.bp)
+
+
 
 @app.route('/')
 def healthCheck():

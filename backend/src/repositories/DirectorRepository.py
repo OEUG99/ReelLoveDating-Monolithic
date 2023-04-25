@@ -96,44 +96,33 @@ class DirectorRepository(AbstractRepository):
         else:
             return None
 
-    def getAll(self):
-        """
-        Gets all directors from the database
-        :return:
-        :rtype:
-        """
-        pass
-
     def getList(self, limit, offset=None):
         pass
 
+    def getAll(self):
+        pass
     def getCount(self):
         pass
 
     def getByAttribute(self, attribute):
         pass
 
-    def getByFirstNameAndLastName(self, directorFirstName, directorLastName):
+    def getAllDirectors(self):
         """
-        Gets a director from the database via its first and last name
-        :param directorFirstName:
-        :type directorFirstName:
-        :param directorLastName:
-        :type directorLastName:
-        :return:
-        :rtype:
+        Gets all directors from the database with their ID, first name, and last name.
+        :return: a list of Director objects
         """
 
-        directorTuple = self.db.query("""
-        SELECT * FROM directors WHERE firstName = %s AND lastName = %s
-        """, (directorFirstName, directorLastName))
+        directorTuples = self.db.query("""
+               SELECT id, firstName, lastName FROM directors
+               """)
 
-        directorTuple = directorTuple[0] if directorTuple else None
+        directors = []
+        for directorTuple in directorTuples:
+            directors.append(Director(directorID=directorTuple[0],
+                                      firstName=directorTuple[1],
+                                      lastName=directorTuple[2]))
 
-        if directorTuple:
-            return Director(directorID=directorTuple[0],
-                            firstName=directorTuple[1],
-                            lastName=directorTuple[2],
-                            directedMovie=directorTuple[3],
-                            directedInGenre=directorTuple[4],
-                            isFavoriteOf=directorTuple[5])
+        return directors
+
+

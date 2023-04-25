@@ -93,13 +93,13 @@ class MovieRepository(AbstractRepository):
 
         if movieTuple:
             return Movie(id=movieTuple[0],
-                            name=movieTuple[1],
-                            publishedDate=movieTuple[2],
-                            director=DirectorRepository().get(movieTuple[3]),
-                            leadActor=ActorRepository().get(movieTuple[4]),
-                            genre=movieTuple[5],
-                            description=movieTuple[6],
-                            rating=movieTuple[7])
+                         name=movieTuple[1],
+                         publishedDate=movieTuple[2],
+                         director=DirectorRepository().get(movieTuple[3]),
+                         leadActor=ActorRepository().get(movieTuple[4]),
+                         genre=movieTuple[5],
+                         description=movieTuple[6],
+                         rating=movieTuple[7])
         else:
             return None
 
@@ -126,26 +126,20 @@ class MovieRepository(AbstractRepository):
     def getByAttribute(self, attribute):
         pass
 
-    def getByTitleAndYear(self, name, publishedDate):
+    def getAllMovies(self):
         """
-        Gets a movie from the database via its title and year
-        :param name:
-        :type name:
-        :param publishedDate:
-        :type publishedDate:
-        :return:
-        :rtype:
+        Gets all movie from the database with their ID, title and year.
+        :return: a list of movie objects
         """
-        query = self.db.query("SELECT * FROM movies WHERE name = %s AND publishedDate = %s", (name, publishedDate))
 
-        query = query[0] if query else None  # If query is not None, get the first element of the list
+        movieTuples = self.db.query("""
+               SELECT id, name, publishedDate FROM movies
+               """)
 
-        if query:
-            return Movie(id=query[0],
-                         name=query[1],
-                         publishedDate=query[2],
-                         director=DirectorRepository().get(query[3]),
-                         leadActor=ActorRepository().get(query[4]),
-                         genre=query[5],
-                         description=query[6],
-                         rating=query[7])
+        movies = []
+        for movieTuple in movieTuples:
+            movies.append(Movie(id=movieTuple[0],
+                                name=movieTuple[1],
+                                publishedDate=movieTuple[2]))
+
+        return movies
