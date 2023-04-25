@@ -25,19 +25,26 @@ class MovieDiscovery:
         top_movies = self.apiClient.get_top50_movies_by_genres('top_250')
         for movie in top_movies:
             # Getting the movie info from the api.
-            title = movie['title']
-            year = movie['year']
-            # capping the description at 255 characters to fit in the database.
-            description = movie['plot'] if len(movie['plot']) < 255 else movie['plot'][::255]
-            genre = movie['genres'][0]
+            title = movie.get('title')
+            year = movie.get('year')
+            description = movie.get('plot')
+            if description and len(description) > 255:
+                description = description[:255]
+            genre = movie['genres'][0] if movie.get('genres') else None
 
-            director = movie['directors'][0]
-            directorFirstName = director['name'].split(' ')[0]
-            directorLastName = director['name'].split(' ')[1]
+            director = movie['directors'][0] if movie.get('directors') else None
+            if director:
+                directorFirstName = director['name'].split(' ')[0]
+                directorLastName = director['name'].split(' ')[1]
+            else:
+                directorFirstName, directorLastName = None, None
 
-            leadActor = movie['cast'][0]
-            leadActorFirstName = leadActor['name'].split(' ')[0]
-            leadActorLastName = leadActor['name'].split(' ')[1]
+            leadActor = movie['cast'][0] if movie.get('cast') else None
+            if leadActor:
+                leadActorFirstName = leadActor['name'].split(' ')[0]
+                leadActorLastName = leadActor['name'].split(' ')[1]
+            else:
+                leadActorFirstName, leadActorLastName = None, None
 
             print(f"Title: {title}")
             print(f"Year: {year}")
@@ -63,7 +70,6 @@ class MovieDiscovery:
                 leadActor = Actor(firstName=leadActorFirstName,
                                   lastName=leadActorLastName,
                                   age=None,
-
                                   )
                 self.addActor(leadActor)
 
