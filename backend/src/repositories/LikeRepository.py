@@ -102,6 +102,21 @@ class LikeRepository(AbstractRepository):
             likes.append(like)
         return likes
 
+    def getAllByUserID(self, userID):
+        query = """
+                      SELECT id
+                        FROM likes
+                        WHERE secondaryUserID = %s
+            """
+
+        result = self.db.query(query, (userID,))
+        likes = []
+        for row in result:
+            like = row[0]
+            likes.append(like)
+
+        return likes
+
     def getByAttribute(self, attribute):
         pass
 

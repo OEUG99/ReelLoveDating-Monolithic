@@ -1,4 +1,6 @@
 from PyDataOpsKit import AbstractRepository
+
+from backend.src.models import Director
 from backend.src.models.Profile import Profile
 
 
@@ -44,6 +46,19 @@ class ProfileRepository(AbstractRepository):
         self.db.query("""
         INSERT INTO profiles (id, visibility, firstName, lastName, bio, gender, age, location, sexuality, interests, favoriteMovies, favoriteActor, favoriteDirector)
         VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        ON DUPLICATE KEY UPDATE
+            visibility = VALUES(visibility),
+            firstName = VALUES(firstName),
+            lastName = VALUES(lastName),
+            bio = VALUES(bio),
+            gender = VALUES(gender),
+            age = VALUES(age),
+            location = VALUES(location),
+            sexuality = VALUES(sexuality),
+            interests = VALUES(interests),
+            favoriteMovies = VALUES(favoriteMovies),
+            favoriteActor = VALUES(favoriteActor),
+            favoriteDirector = VALUES(favoriteDirector)
         """, (profile.id, profile.visibility, profile.firstName, profile.lastName, profile.bio, profile.gender,
               profile.age, profile.location, profile.sexuality, profile.interests, profile.favoriteMovies,
               profile.favoriteActor, profile.favoriteDirector))
@@ -132,7 +147,7 @@ class ProfileRepository(AbstractRepository):
         else:
             return None
 
-    def getRandom(self, numProfilesToFetch):
+    def getRandom(self):
         """
         Fetches n-number of random number of profiles from the database.
         :return:
@@ -140,27 +155,29 @@ class ProfileRepository(AbstractRepository):
         """
 
         query = self.db.query("""
-            SELECT * FROM profiles ORDER BY RANDOM() LIMIT 5
-            """)
+            SELECT id FROM profiles ORDER BY RAND() LIMIT 1;
+            """)[0][0]
 
-        if query is None:
-            return None
+        return query
 
-        profiles = []
-        for profilesTuples in query:
-            profiles.append(Profile(userID=profilesTuples[0],
-                                    visibility=profilesTuples[1],
-                                    firstName=profilesTuples[2],
-                                    lastName=profilesTuples[3],
-                                    bio=profilesTuples[4],
-                                    gender=profilesTuples[5],
-                                    age=profilesTuples[6],
-                                    location=profilesTuples[7],
-                                    sexuality=profilesTuples[8],
-                                    interests=profilesTuples[9],
-                                    favoriteMovies=profilesTuples[10]))
+    def getMatchedRandom(self, userID):
+        """
+        matched with the getRandom function to get a random profile
+        :return:
+        :rtype:
+        """
 
-        return profiles
+        query = self.db.query(f"""
+            SELECT p2.id
+            FROM profiles p1, profiles p2
+            WHERE p1.id = {userID} AND (p1.favoriteMovies = p2.favoriteMovies OR
+                                           p1.favoriteActor = p2.favoriteActor OR
+                                           p1.favoriteDirector = p2.favoriteDirector)
+            ORDER BY RAND() -- Randomize the result
+            LIMIT 1; -- Limit to one row
+            """)[0][0]
+
+        return query
 
     def getList(self, limit, offset=None):
         pass
