@@ -51,7 +51,10 @@ class Movie(AbstractModel):
         return {
             "id": self.id,
             "name": self.name,
-            "publishedDate": self.publishedDate
+            "publishedDate": self.publishedDate,
+            "directorID": self.director.id,
+            "leadActorID": self.leadActor.id,
+            "genre": self.genre
         }
 
     def __repr__(self):
