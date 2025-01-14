@@ -1,1 +1,1 @@
-Coming soon, javascript is very scary!
+moved to its own repo
